@@ -9,20 +9,43 @@ module.exports = {
     publicPath: "auto",
   },
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json']
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: "babel-loader",
-        exclude: /node_modules/,
+        test: /\.m?js/,
+        type: 'javascript/auto',
+        resolve: {
+          fullySpecified: false
+        }
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        test: /\.(css|s[ac]ss)$/i,
+        use: ['style-loader', 'css-loader', 'postcss-loader']
       },
-    ],
+      {
+        test: /\.(png|jp?g|gif|svg|ico)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
+      }
+    ]
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -37,6 +60,7 @@ module.exports = {
   ],
   devServer: {
     port: __PORT__,
+    allowedHosts: 'all',
     historyApiFallback: true,
     static: {
       directory: path.join(__dirname, "dist"),
