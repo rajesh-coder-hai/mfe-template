@@ -1,5 +1,6 @@
 const { ModuleFederationPlugin } = require("webpack").container;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const federationConfig = require('./config/federation.config');
 const path = require("path");
 
 module.exports = {
@@ -25,15 +26,14 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "__APP_NAME__",
-      shared: {
-        react: { singleton: true, eager: true },
-        "react-dom": { singleton: true, eager: true },
-      },
-    }),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-    }),
+        ...federationConfig,
+        ...(process.env.APP_TYPE === 'remote' && { 
+          exposes: { './Widget': './src/bootstrap' }
+        }),
+        ...(process.env.APP_TYPE === 'shell' && {
+          remotes: {}
+        })
+      }),
   ],
   devServer: {
     port: __PORT__,
