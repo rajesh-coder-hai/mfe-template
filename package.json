@@ -2,7 +2,7 @@
     "name": "__APP_NAME__",
     "version": "1.0.0",
     "scripts": {
-      "start": "webpack serve --env APP_TYPE=__APP_TYPE__",
+      "start": "webpack serve --mode development --env APP_TYPE=__APP_TYPE__",
     "build": "webpack build --env APP_TYPE=__APP_TYPE__",
       "clean": "rm -rf dist",
       "serve": "serve dist -p __PORT__"

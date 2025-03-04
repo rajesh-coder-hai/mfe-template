@@ -1,4 +1,4 @@
-const { ModuleFederationPlugin } = require("webpack").container;
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const federationConfig = require('./config/federation.config');
 const path = require("path");
@@ -56,9 +56,25 @@ module.exports = {
         }),
         ...(process.env.APP_TYPE === 'shell' && {
           remotes: {}
-        })
+        }),
+        shared: {
+          ...deps,
+          react: {
+            singleton: true,
+            requiredVersion: deps["react"], // Ensures version compatibility
+          },
+          "react-dom": {
+            singleton: true,
+            requiredVersion: deps["react-dom"],
+          },
+          "react-router-dom": {
+            singleton: true,
+            requiredVersion: deps["react-router-dom"],
+          },
+        },
       }),
-      new HtmlWebPackPlugin({
+      
+      new HtmlWebpackPlugin({
         template: './src/index.html'
       }),
   ],
