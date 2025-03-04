@@ -2,6 +2,7 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const federationConfig = require('./config/federation.config');
 const path = require("path");
+const deps = require("./package.json").dependencies;
 
 module.exports = {
   // entry: "./src/bootstrap.js",
