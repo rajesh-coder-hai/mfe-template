@@ -4,12 +4,13 @@ const federationConfig = require('./config/federation.config');
 const path = require("path");
 
 module.exports = {
-  entry: "./src/bootstrap.js",
+  // entry: "./src/bootstrap.js",
   output: {
     publicPath: "auto",
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json']
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
   module: {
     rules: [
@@ -56,6 +57,9 @@ module.exports = {
         ...(process.env.APP_TYPE === 'shell' && {
           remotes: {}
         })
+      }),
+      new HtmlWebPackPlugin({
+        template: './src/index.html'
       }),
   ],
   devServer: {
